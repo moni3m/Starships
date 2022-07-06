@@ -30,7 +30,7 @@ def drop_collection(collection_name: str, database_name: str):  # Function will 
     try:
         return db.drop_collection(collection_name)  # this will drop the collection
     except:
-        print(f"{collection_name} collection could not be dropped.")
+        return print(f"{collection_name} collection could not be dropped.")
 
 drop_collection("starships", "starwars")
 
