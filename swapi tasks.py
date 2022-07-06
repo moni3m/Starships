@@ -25,19 +25,20 @@ from pprint import pprint
 
 
 def do_api_call(url: str):  # This function completes the API call request by inputting the URL as the arguement
-    results = requests.get(url).json()  # HTTP GET request from the given URL returning the results in a JSON format, storing it in a varibale called "response"
+    results = requests.get(url).json()["results"]  # HTTP GET request from the given URL returning the results in a JSON format, storing it in a varibale called "response"
     return results  # returns only the result\'s dictionary from the API call back to the function
-
-
-#pprint(do_api_call("https://swapi.dev/api/starships/?page=4"))
 
 
 def collecting_ship_data():  # This function will loop through the number of pages and collecting the ship data from each page
     url = f"https://swapi.dev/api/starships/?page=1"  # this is the URL of the first page
     while requests.get(url).status_code == 200:  # a WHILE loop where condition is that the request is successful
-        results = requests.get(url).json()["results"]
+        results = requests.get(url).json()["results"]  # results variable stores
         new_page = requests.get(url).json()["next"]
         url = new_page
         pprint(results)
 
+
 collecting_ship_data()
+
+
+def do_pilot_call():
