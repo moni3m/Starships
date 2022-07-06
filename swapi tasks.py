@@ -30,15 +30,24 @@ def do_api_call(url: str):  # This function completes the API call request by in
 
 
 def collecting_ship_data():  # This function will loop through the number of pages and collecting the ship data from each page
-    url = f"https://swapi.dev/api/starships/?page=1"  # this is the URL of the first page
+    url = "https://swapi.dev/api/starships/?page=1"  # this is the URL of the first page
+    ship_info = []
     while requests.get(url).status_code == 200:  # a WHILE loop where condition is that the request is successful
         results = requests.get(url).json()["results"]  # results variable stores
         new_page = requests.get(url).json()["next"]
         url = new_page
-        pprint(results)
+        ship_info.append(results)
+        pprint(ship_info)
+    return
 
 
-collecting_ship_data()
+#pprint(collecting_ship_data())
+
 
 
 def do_pilot_call():
+    ships = collecting_ship_data()
+    for pilots in ships["pilots"]:
+        print(pilots)
+
+do_pilot_call()
