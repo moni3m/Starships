@@ -32,7 +32,7 @@ def drop_collection(collection_name: str, database_name: str):  # Function will 
     except:
         return print(f"{collection_name} collection could not be dropped.")
 
-#drop_collection("starships", "starwars")
+drop_collection("starships", "starwars")
 
 
 def do_api_call(url: str):  # This function completes the API call request by inputting the URL as the argument
@@ -70,7 +70,7 @@ def pilot_replacement():
                 pilot_data = requests.get(pilot).json()
                 pilot_name = pilot_data["name"]
                 pilot_id = db.characters.find_one({"name": pilot_name}, {"_id" : 1})
-                ships["pilots"] = pilot_id
+                ships["pilots"][ships["pilots"].index(pilot)] = pilot_id
     return starships
 
 
@@ -82,7 +82,6 @@ def collection_creation():
     try:
         db.create_collection("starships")
         print("collection successfully created")
-
     except:
         print("collection could not be created")
 
@@ -101,7 +100,7 @@ def insert_into_collection():
         print("Failed to insert collection")
     return
 
-#pprint(insert_into_collection())
+pprint(insert_into_collection())
 
 
 
