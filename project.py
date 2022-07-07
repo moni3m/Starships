@@ -21,7 +21,6 @@
 
 import pymongo
 import requests
-from pprint import pprint
 
 # -------------------------------FUNCTIONS--------------------------------------------------------
 
@@ -40,6 +39,12 @@ def drop_collection(collection_name: str, database_name: str):  # Function will 
 def do_api_call(url: str):  # This function completes the API call request by inputting the URL as the argument
     return requests.get(url).json()  # HTTP GET request from the given URL returning the results in a JSON format (dict)
 
+# def loop_through_pages():
+#     url = "https://swapi.dev/api/starships/?page=1"
+#     while requests.get(url).status_code == 200:  # a WHILE loop where condition is that the request is successful
+#         response = do_api_call(url)["results"]  # response variable stores the list from 'results' from our call
+#         new_page = do_api_call(url)["next"]  # this variable stores the endpoint of our next page
+#         url = new_page
 
 def collecting_ship_data():  # Function will loop through any number of pages, collecting the ship data from each page
     url = "https://swapi.dev/api/starships/?page=1"  # URL stores the url of the first page
@@ -55,9 +60,9 @@ def collecting_ship_data():  # Function will loop through any number of pages, c
         return ship_info  # list 'ship_info' is returned to the function to be used later
 
 
-def connect_to_database(database_name: str): # Function to connect to the given database to be used later for queries
+def connect_to_database(database_name: str):  # Function to connect to the given database to be used later for queries
     client = pymongo.MongoClient("localhost:27017")  # Creating a pymongo client
-    db = client[database_name]  # Initalising a database
+    db = client[database_name]  # Initialising a database
     return db  # returns the established database back to the function
 
 
@@ -94,7 +99,3 @@ def insert_into_collection(collection_name: str, database_name: str):  # functio
     except:  # If function fails to insert the data into collection, it will print 'Failed'
         print("Insertion Failed")
     return
-
-
-drop_collection("starships", "starwars")
-insert_into_collection("starships", "starwars")
