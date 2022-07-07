@@ -32,7 +32,7 @@ def drop_collection(collection_name: str, database_name: str):  # Function will 
     except:
         return print(f"{collection_name} collection could not be dropped.")
 
-drop_collection("starships", "starwars")
+#drop_collection("starships", "starwars")
 
 
 def do_api_call(url: str):  # This function completes the API call request by inputting the URL as the argument
@@ -56,22 +56,43 @@ def collecting_ship_data():  # Function will loop through any number of pages, c
 
 #pprint(collecting_ship_data())
 
+def create_collections(database_name: str):
+    client = pymongo.MongoClient("localhost:27017")  # Creating a pymongo client
+    db = client[database_name]
+    return db
 
 def do_pilot_call():
+    db = create_collections("starwars")
     starships = collecting_ship_data()
+    pilots = []
     for ships in starships:
         if ships["pilots"]:
-            print(ships["pilots"])
+            for pilot in ships["pilots"]:
+                pilot_data = requests.get(pilot).json()
+                pilot_name = pilot_data["name"]
+                pilot_id = db.characters.find_one({"name": pilot_name}, {"_id" : 1})
+                ships["pilots"] = pilot_id
+    pprint(starships)
+#            pilots.append(ships["pilots"])
+#    return pilots
 
-#do_pilot_call()
-
-#def pilot_api_replacement():
+pprint(do_pilot_call())
 
 
 
-#if __name__ = "__main__" :
-    collection = "starships"
-    database = "starwars"
+
+# def pilot_api_replacement():
+#     create_collections(database_name)
+#     for ship in collecting_ship_data():
+#         for pilot in do_pilot_call():
+#           pilot_id = db.characters.find_one({"name":})
+
+
+
+
+# if __name__ = "__main__" :
+#     collection = "starships"
+#     database = "starwars"
 
 
 
