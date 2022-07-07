@@ -39,12 +39,6 @@ def drop_collection(collection_name: str, database_name: str):  # Function will 
 def do_api_call(url: str):  # This function completes the API call request by inputting the URL as the argument
     return requests.get(url).json()  # HTTP GET request from the given URL returning the results in a JSON format (dict)
 
-# def loop_through_pages():
-#     url = "https://swapi.dev/api/starships/?page=1"
-#     while requests.get(url).status_code == 200:  # a WHILE loop where condition is that the request is successful
-#         response = do_api_call(url)["results"]  # response variable stores the list from 'results' from our call
-#         new_page = do_api_call(url)["next"]  # this variable stores the endpoint of our next page
-#         url = new_page
 
 def collecting_ship_data():  # Function will loop through any number of pages, collecting the ship data from each page
     url = "https://swapi.dev/api/starships/?page=1"  # URL stores the url of the first page
