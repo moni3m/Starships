@@ -56,15 +56,14 @@ def collecting_ship_data():  # Function will loop through any number of pages, c
 
 #pprint(collecting_ship_data())
 
-def create_collections(database_name: str):
+def connect_to_collections(database_name: str):
     client = pymongo.MongoClient("localhost:27017")  # Creating a pymongo client
     db = client[database_name]
     return db
 
-def do_pilot_call():
-    db = create_collections("starwars")
+def pilot_replacement():
+    db = connect_to_collections("starwars")
     starships = collecting_ship_data()
-    pilots = []
     for ships in starships:
         if ships["pilots"]:
             for pilot in ships["pilots"]:
@@ -72,20 +71,39 @@ def do_pilot_call():
                 pilot_name = pilot_data["name"]
                 pilot_id = db.characters.find_one({"name": pilot_name}, {"_id" : 1})
                 ships["pilots"] = pilot_id
-    pprint(starships)
-#            pilots.append(ships["pilots"])
-#    return pilots
-
-pprint(do_pilot_call())
+    return starships
 
 
+pprint(pilot_replacement())
 
 
-# def pilot_api_replacement():
-#     create_collections(database_name)
-#     for ship in collecting_ship_data():
-#         for pilot in do_pilot_call():
-#           pilot_id = db.characters.find_one({"name":})
+def collection_creation():
+    db = connect_to_collections("starwars")
+    try:
+        db.create_collection("starships")
+        print("collection successfully created")
+
+    except:
+        print("collection could not be created")
+
+#collection_creation()
+
+
+
+
+def insert_into_collection():
+    db = connect_to_collections("starwars")
+    try:
+        starships_collection = db.get_collection("starships")
+        starships_collection.insert_many(pilot_replacement())
+        print("Collection Successfully inserted")
+    except:
+        print("Failed to insert collection")
+    return
+
+#pprint(insert_into_collection())
+
+
 
 
 
